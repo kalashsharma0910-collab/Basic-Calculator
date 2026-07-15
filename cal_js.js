@@ -2,23 +2,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const input = document.querySelector("input");
     const body = document.querySelector("body");
 
-    if (!input || !body) return;
-    input.focus();
+    if (!input||!body)
+         return;
 
-    let isErrorDisplayed=false;
+
+    input.focus();
+let isErrDisp=false;
 
     const setValue=(val)=>{
         input.value = val;
-        isErrorDisplayed = val === "Error";
+        isErrDisp = val === "Error";
         input.focus();
     };
-const isValidExpression = exp => {
+const isvalidexpr=exp=>{
         return /^[-+*/%()\d.\s]+$/.test(exp);
     };
 const calculate = () => {
         const expr= input.value.trim();
         if (!expr) return;
-        if (!isValidExpression(expr)) {
+        if (!isvalidexpr(expr)) {
             setValue("Error");
             return;
         }
@@ -32,69 +34,60 @@ const calculate = () => {
 
 
 
-    input.addEventListener("input",e=>{
-        if (!isErrorDisplayed) 
+    
+    
+input.addEventListener("input",e=>{
+        if (!isErrDisp) 
           return;
-
-        const currVal=e.target.value;
-        const newValue=currVal.replace(/^Error/, "");
-        input.value=newValue;
-        isErrorDisplayed=false;
+const currVal=e.target.value;
+        const newVal=currVal.replace(/^Error/, "");
+        input.value=newVal;
+        isErrDisp=false;
         input.focus();
     });
+body.addEventListener("click",e=>{
+    const target = e.target;
+if(!target.matches("button")) 
+return;
 
-    body.addEventListener("click",e=>{
-        const target = e.target;
-        if (!target.matches("button")) 
-            return;
-
-        const buttonValue=target.textContent.trim();
-
-        if (buttonValue=="AC") 
+const button=target.textContent.trim();
+if(button=="AC") 
             {
             setValue("");
             return;
         }
-
-        if (buttonValue=="⌫")
+if(button=="⌫") 
              {
             setValue(input.value.slice(0,-1));
             return;
         }
-
-        if (buttonValue==="=") 
+if(button==="=") 
             {
             calculate();
             return;
         }
-
-        if (input.value==="Error") {
+if (input.value==="Error") {
             setValue("");
         }
-        
-
-        input.value += buttonValue;
+        input.value += button;
         input.focus();
     });
-
-    input.addEventListener("keydown", e => {
-        if(e.key==="Enter") 
-            {
-            e.preventDefault();
-            calculate();
-            return;
+input.addEventListener("keydown", e => {
+if(e.key==="Enter") 
+{
+e.preventDefault();
+calculate();
+return;
         }
-
-        if (e.key==="Escape") {
-            e.preventDefault();
-            setValue("");
-            return;
+if (e.key==="Escape") {
+e.preventDefault();
+setValue("");
+return;
         }
-        if (e.key==="Backspace"||e.key==="Delete") 
-            {
-            return;
-        }
+        if(e.key==="Backspace"||e.key==="Delete") 
+{
+return;
+}
 
-       
     });
 });
